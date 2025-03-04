@@ -221,7 +221,7 @@ class Board(Entity):
 		self.update(updates_in_a_row + 1)
 
 	def draw(self, surface: Surface) -> None:
-		self.draw_brackground(surface, 60)
+		self.draw_brackground(surface, 60, 1)
 
 		x, y = self.pos
 

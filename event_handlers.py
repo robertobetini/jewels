@@ -30,7 +30,6 @@ def crush_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board,
 		if _score == 0:
 			continue
 
-		print(_score)
 		jewel_type = i
 		Thread(target=score.scores[jewel_type].add, args=[_score]).start()
 
