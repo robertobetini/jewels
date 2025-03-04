@@ -5,15 +5,19 @@ from random import randint
 from threading import Thread
 from pygame import Surface
 
-from entities import jewel
 from entities.entity import Entity
 from entities.jewel import Jewel, JEWEL_CRUSHED, JEWEL_IDLE, JEWEL_MOVING
+from constants import Game, Display, Sound
 
-from events import GameEvent, GameEventEmitter, CRUSH_JEWEL_EVENT
+from events import GameEvent, GameEventEmitter, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT
 
 def clear_selected(func):
 	def wrapper(self) -> bool:
 		swapped = func(self)
+		for jewel in self.selected:
+			if jewel:
+				jewel.highlighted = False
+				
 		self.selected = []
 		return swapped
 
@@ -21,13 +25,14 @@ def clear_selected(func):
 
 class Board(Entity):
 	def __init__(self, pos: tuple[int, int], width: int, height: int):
-		self.cell_size = Jewel.JEWEL_SIZE
+		self.cell_size = Display.JEWEL_SIZE
 		size = self.cell_size * width, self.cell_size * height
 		super().__init__(pos, size, (110, 118, 113, 0))
 		
 		self.width = width
 		self.height = height
 		self.selected : list[Jewel] = []
+		self.finished = False
 		self.__initialize_jewels()
 
 	def __repr__(self):
@@ -50,8 +55,8 @@ class Board(Entity):
 			self.jewels_next.append([])
 
 			for col in range(self.width):
-				type_index = randint(0, len(Jewel.JEWEL_TYPES) - 1)
-				jewel_type = Jewel.JEWEL_TYPES[type_index]
+				type_index = randint(0, len(Game.JEWEL_TYPES) - 1)
+				jewel_type = Game.JEWEL_TYPES[type_index]
 				jewel = Jewel(0, col, self.pos, jewel_type)
 
 				Thread(target=jewel.update, args=[row, col, 0.015]).start()
@@ -81,7 +86,7 @@ class Board(Entity):
 	def __wait_until_is_idle(self) -> None:
 		def wait():
 			while self.__is_moving(): 
-				sleep(0.001)
+				sleep(0.01)
 
 		thread = Thread(target=wait)
 		thread.start()
@@ -121,8 +126,8 @@ class Board(Entity):
 				if existing_jewel.state != JEWEL_CRUSHED:
 					continue
 
-				type_index = randint(0, len(Jewel.JEWEL_TYPES) - 1)
-				jewel_type = Jewel.JEWEL_TYPES[type_index]
+				type_index = randint(0, len(Game.JEWEL_TYPES) - 1)
+				jewel_type = Game.JEWEL_TYPES[type_index]
 				jewel = Jewel(0, col, self.pos, jewel_type)
 
 				Thread(target=jewel.update, args=[row, col, 0.015]).start()
@@ -181,7 +186,7 @@ class Board(Entity):
 
 		return breakable
 
-	def update(self):
+	def update(self, updates_in_a_row: int = 1):
 		while True:
 			all_jewels_are_idle = True
 			for row in self.jewels:
@@ -195,24 +200,25 @@ class Board(Entity):
 			sleep(0.01)
 
 		breakable = self.__get_breakable_jewels()
-		print(breakable)
+		#print(breakable)
 		if len(breakable) < 1:
 			return
 
 		threads = [ Thread(target=jewel.crush) for jewel in breakable ]
+		Sound.CLICK_SOUND.play()
 		for thread in threads:
 			thread.start()
 		for thread in threads:
 			thread.join()
 
-		event = GameEvent(CRUSH_JEWEL_EVENT, [breakable])
+		event = GameEvent(CRUSH_JEWEL_EVENT, [breakable, updates_in_a_row])
 		GameEventEmitter.emit(event)
 		self.__pull_down()
 		self.__refill()
 
 		sleep(0.1)
 
-		self.update()
+		self.update(updates_in_a_row + 1)
 
 	def draw(self, surface: Surface) -> None:
 		self.draw_brackground(surface, 60)
@@ -256,6 +262,7 @@ class Board(Entity):
 				return None
 
 		self.selected.append(jewel)
+		jewel.highlighted = True
 
 		return jewel
 
@@ -269,6 +276,8 @@ class Board(Entity):
 
 		if self.__are_neighbors(self.selected[0], self.selected[1]):
 			self.free_swap((self.selected[0], self.selected[1]))
+			event = GameEvent(MOVE_JEWEL_EVENT)
+			GameEventEmitter.emit(event)
 			return True
 
 		return False
@@ -287,3 +296,6 @@ class Board(Entity):
 
 		for thread in threads:
 			thread.start()
+
+	def game_over(self):
+		self.finished = True

@@ -1,25 +1,29 @@
 from threading import Thread
 
-from constants import BASE_JEWEL_SCORE
-from events import GameEvent, CRUSH_JEWEL_EVENT
+from constants import Game
+from entities.move_counter import MoveCounter
+from events import GameEvent, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT, OUT_OF_MOVES_EVENT
 from entities import Jewel, Board, Score
 
 class GameEventHandlingError(Exception):
 	def __init__(self, event: GameEvent):
 		super().__init__(f"Invalid arguments for event {event.name}: {event.args}")
 
-def crush_jewel_event(event: GameEvent, board: Board, score: Score) -> None:
-	if len(event.args) < 1:
+def crush_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
+	if len(event.args) != 2:
 		raise GameEventHandlingError(event)
+
 	jewels : list[Jewel] = event.args[0]
+	updates_in_a_row: int = event.args[1]
+
 	summary = {}
-	scores = [0 for type in Jewel.JEWEL_TYPES]
+	scores = [0 for type in Game.JEWEL_TYPES]
 	for jewel in jewels:
 		if summary.get(jewel.type, None) == None:
 			summary[jewel.type] = 0
 
 		summary[jewel.type] += 1
-		scores[jewel.type] += BASE_JEWEL_SCORE * (1 + summary[jewel.type] / 20)
+		scores[jewel.type] += int(Game.BASE_JEWEL_SCORE * (1 + summary[jewel.type] * 0.05) ** updates_in_a_row)
 
 	for i in range(len(scores)):
 		_score = scores[i]
@@ -30,6 +34,14 @@ def crush_jewel_event(event: GameEvent, board: Board, score: Score) -> None:
 		jewel_type = i
 		Thread(target=score.scores[jewel_type].add, args=[_score]).start()
 
+def move_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
+	Thread(target=move_counter.decrease, args=[1]).start()
+
+def out_of_moves_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
+	board.game_over()
+
 event_handlers = {
-	CRUSH_JEWEL_EVENT: crush_jewel_event
+	CRUSH_JEWEL_EVENT: crush_jewel_event,
+	MOVE_JEWEL_EVENT: move_jewel_event,
+	OUT_OF_MOVES_EVENT: out_of_moves_event
 }

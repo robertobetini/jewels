@@ -1,6 +1,8 @@
 event_queue = []
 
 CRUSH_JEWEL_EVENT = "CRUSH_JEWEL_EVENT"
+MOVE_JEWEL_EVENT = "MOVE_JEWEL_EVENT"
+OUT_OF_MOVES_EVENT = "OUT_OF_MOVES_EVENT"
 
 class GameEvent():
 	def __init__(self, name: str, args: list = []):

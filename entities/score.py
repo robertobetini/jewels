@@ -1,12 +1,10 @@
 import pygame
 
 from time import sleep
-from pygame import Color, Rect, Surface
-from pygame.display import get_window_size
+from pygame import Rect, Surface
 
-from constants import JEWEL_ICONS, JEWEL_COLORS
+from constants import Game, Image, Colors
 from entities.entity import Entity
-from entities.jewel import Jewel
 
 PROGRESS_MAP = {
 	1: 100,
@@ -58,7 +56,7 @@ class Score(Entity):
 	def __init__(self, pos: tuple[int, int], size = (20, 20)):
 		super().__init__(pos, size, (110, 118, 113, 0))
 
-		self.scores = [ Progress() for jewel_type in Jewel.JEWEL_TYPES ]
+		self.scores = [ Progress() for jewel_type in Game.JEWEL_TYPES ]
 		self.font = pygame.font.Font(pygame.font.get_default_font(), 18)
 
 	def __repr__(self) -> str:
@@ -79,7 +77,7 @@ class Score(Entity):
 			# draw icon
 			pos = int((i % 3) * portion_x + offset_x + margin), int((i // 3) * portion_y + offset_y + margin)
 			jewel_type = i
-			image = JEWEL_ICONS[jewel_type]
+			image = Image.JEWEL_ICONS[jewel_type]
 			surface.blit(image, pos)
 
 			# draw progress
@@ -87,7 +85,7 @@ class Score(Entity):
 			max_progress = portion_x - 70
 			target = progress.get_percentage() * max_progress
 			progress_pos = pos[0] + image.get_width() + 10, pos[1]
-			jewel_color = JEWEL_COLORS[jewel_type]
+			jewel_color = Colors.JEWEL_COLORS[jewel_type]
 
 			current_rect = Rect(progress_pos, (progress.get_percentage() * max_progress, image.get_width()))
 			max_rect = Rect(progress_pos, (max_progress, image.get_width()))
@@ -95,5 +93,5 @@ class Score(Entity):
 			pygame.draw.rect(surface, self.color, max_rect, 3)
 
 			# text display
-			text = self.font.render(str(progress.level), False, jewel_color)
+			text = self.font.render(str(progress.level), True, jewel_color)
 			surface.blit(text, (pos[0] + max_rect.width + 32, pos[1] - 1))
