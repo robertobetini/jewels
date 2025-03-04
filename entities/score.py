@@ -85,13 +85,12 @@ class Score(Entity):
 			max_progress = portion_x - 70
 			target = progress.get_percentage() * max_progress
 			progress_pos = pos[0] + image.get_width() + 10, pos[1]
-			jewel_color = Colors.JEWEL_COLORS[jewel_type]
 
 			current_rect = Rect(progress_pos, (progress.get_percentage() * max_progress, image.get_width()))
 			max_rect = Rect(progress_pos, (max_progress, image.get_width()))
-			pygame.draw.rect(surface, jewel_color, current_rect)
+			pygame.draw.rect(surface, Colors.JEWEL_PROGRESS_GAUGE_COLOR, current_rect)
 			pygame.draw.rect(surface, self.color, max_rect, 3)
 
 			# text display
-			text = self.font.render(str(progress.level), True, jewel_color)
+			text = self.font.render(str(progress.level), True, Colors.JEWEL_PROGRESS_GAUGE_COLOR)
 			surface.blit(text, (pos[0] + max_rect.width + 32, pos[1] - 1))
