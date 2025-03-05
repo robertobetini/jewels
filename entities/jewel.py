@@ -4,8 +4,9 @@ from time import sleep
 from random import randint
 from pygame import Rect, Surface
 
-from constants import Display, Game, Image
+from constants import Display, Game, Image, Colors
 from entities.entity import Entity
+from errors import InvalidJewelStateError
 
 JEWEL_SIZE = Display.JEWEL_SIZE
 
@@ -16,6 +17,11 @@ JEWEL_CRUSHED = 2
 
 class Jewel(Entity):
 	JEWEL_STATES = [JEWEL_IDLE, JEWEL_MOVING, JEWEL_CRUSHED]
+	JEWEL_STATE_NAMES = {
+		JEWEL_IDLE: "JEWEL_IDLE",
+		JEWEL_MOVING: "JEWEL_MOVING",
+		JEWEL_CRUSHED: "JEWEL_CRUSHED"
+	}
 
 	def __init__(self, row: int, col: int, offset: tuple[int, int] = (0, 0), type: int = 0):
 		self.offset = offset
@@ -31,10 +37,10 @@ class Jewel(Entity):
 		self.hidden = False
 		self.angle = 0
 		self.highlighted = False
-		self.highlight_color = (180, 220, 200)
+		self.highlight_color = Colors.JEWEL_HIGHLIGHT_COLOR
 
 	def __repr__(self) -> str:
-		return f"<{self.type}>[{self.row}, {self.col}] = {self.state}"
+		return f"<{self.type}>[{self.row}, {self.col}] = {Jewel.JEWEL_STATE_NAMES[self.state]}"
 
 	def __str__(self) -> str:
 		return self.__repr__()
@@ -50,7 +56,7 @@ class Jewel(Entity):
 
 	def set_state(self, state: int):
 		if state not in Jewel.JEWEL_STATES:
-			raise Exception(f"Invalid jewel state: {state}")
+			raise InvalidJewelStateError(state)
 
 		self.state = state
 

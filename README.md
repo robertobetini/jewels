@@ -70,7 +70,7 @@ There's also a progress gauge for each jewel type, but it's not fully function r
 - [ ] Create some sound effects
 - [ ] Create custom visual assets
 - [x] Add limited movements
-- [ ] Create game config file 
+- [ ] Create game config file
 - [x] Create a simple game event engine
 - [ ] Create a log system to catch erros and unexpected behaviour
 - [ ] Adjust visual elements size to the window

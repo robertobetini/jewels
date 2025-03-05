@@ -7,7 +7,7 @@ from pygame import Surface
 
 from entities.entity import Entity
 from entities.jewel import Jewel, JEWEL_CRUSHED, JEWEL_IDLE, JEWEL_MOVING
-from constants import Game, Display, Sound
+from constants import Game, Display, Sound, Colors
 
 from events import GameEvent, GameEventEmitter, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT
 
@@ -27,7 +27,7 @@ class Board(Entity):
 	def __init__(self, pos: tuple[int, int], width: int, height: int):
 		self.cell_size = Display.JEWEL_SIZE
 		size = self.cell_size * width, self.cell_size * height
-		super().__init__(pos, size, (110, 118, 113, 0))
+		super().__init__(pos, size, Colors.BORDER_COLOR)
 		
 		self.width = width
 		self.height = height
@@ -205,7 +205,7 @@ class Board(Entity):
 			return
 
 		threads = [ Thread(target=jewel.crush) for jewel in breakable ]
-		Sound.CLICK_SOUND.play()
+		Sound.CLICK_SOUND.play().set_volume(0.4)
 		for thread in threads:
 			thread.start()
 		for thread in threads:

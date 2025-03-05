@@ -18,10 +18,10 @@ def handle_engine_events(board: Board):
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-            selected = board.select(mouse_pos)
+            board.select(mouse_pos)
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_pos = pygame.mouse.get_pos()
-            selected = board.select(mouse_pos)
+            board.select(mouse_pos)
 
             if board.can_try_swap():
                 global moved

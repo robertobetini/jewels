@@ -1,13 +1,9 @@
 from threading import Thread
 
 from constants import Game
-from entities.move_counter import MoveCounter
+from errors import GameEventHandlingError
 from events import GameEvent, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT, OUT_OF_MOVES_EVENT
-from entities import Jewel, Board, Score
-
-class GameEventHandlingError(Exception):
-	def __init__(self, event: GameEvent):
-		super().__init__(f"Invalid arguments for event {event.name}: {event.args}")
+from entities import Jewel, Board, Score, MoveCounter
 
 def crush_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
 	if len(event.args) != 2:
@@ -17,7 +13,7 @@ def crush_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board,
 	updates_in_a_row: int = event.args[1]
 
 	summary = {}
-	scores = [0 for type in Game.JEWEL_TYPES]
+	scores = [0 for _ in Game.JEWEL_TYPES]
 	for jewel in jewels:
 		if summary.get(jewel.type, None) == None:
 			summary[jewel.type] = 0

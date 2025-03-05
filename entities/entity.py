@@ -3,7 +3,7 @@ import pygame
 from pygame import Surface, Rect
 
 class Entity:
-	def __init__(self, pos: tuple[int, int], size: tuple[int, int] = (20, 20), color: tuple[int, int, int, int] = (0, 0, 0, 0)):
+	def __init__(self, pos: tuple[int, int], size: tuple[int, int] = (20, 20), color: tuple[int, int, int] | tuple[int, int, int, int] = (0, 0, 0)):
 		self.pos = pos
 		self.color = color
 		self.size = size
