@@ -3,6 +3,7 @@ import pygame
 from time import sleep
 from random import randint
 from pygame import Rect, Surface
+from pygame.draw import line
 
 from constants import Display, Game, Image, Colors
 from entities.entity import Entity
@@ -23,21 +24,23 @@ class Jewel(Entity):
 		JEWEL_CRUSHED: "JEWEL_CRUSHED"
 	}
 
-	def __init__(self, row: int, col: int, offset: tuple[int, int] = (0, 0), type: int = 0):
+	def __init__(self, row: int, col: int, jewel_size: int, offset: tuple[int, int] = (0, 0), type: int = 0):
 		self.offset = offset
 		offset_x, offset_y = self.offset
-		pos = col * Display.JEWEL_SIZE + offset_x, row * JEWEL_SIZE + offset_y
-		super().__init__(pos, size=(JEWEL_SIZE, JEWEL_SIZE))
+		pos = col * jewel_size + offset_x, row * jewel_size + offset_y
+		super().__init__(pos, size=(jewel_size, jewel_size))
 
 		self.row = row
 		self.col = col
+		self.jewel_size = jewel_size
 		self.type = type
-		self.image = pygame.transform.scale(Image.JEWEL_IMAGES[type], (JEWEL_SIZE, JEWEL_SIZE))
+		self.image = pygame.transform.scale(Image.JEWEL_IMAGES[type], (self.jewel_size, self.jewel_size))
 		self.state = JEWEL_IDLE
 		self.hidden = False
 		self.angle = 0
 		self.highlighted = False
 		self.highlight_color = Colors.JEWEL_HIGHLIGHT_COLOR
+		self.line_width = round(5 * jewel_size / Display.JEWEL_SIZE)
 
 	def __repr__(self) -> str:
 		return f"<{self.type}>[{self.row}, {self.col}] = {Jewel.JEWEL_STATE_NAMES[self.state]}"
@@ -52,7 +55,7 @@ class Jewel(Entity):
 		return self.row == other.row and self.col == other.col and self.type == other.type
 
 	def __update_image(self):
-		self.image = pygame.transform.scale(Image.JEWEL_IMAGES[self.type], (JEWEL_SIZE, JEWEL_SIZE))
+		self.image = pygame.transform.scale(Image.JEWEL_IMAGES[self.type], (self.jewel_size, self.jewel_size))
 
 	def set_state(self, state: int):
 		if state not in Jewel.JEWEL_STATES:
@@ -66,11 +69,11 @@ class Jewel(Entity):
 			surface.blit(self.image, self.pos)
 			if self.highlighted:
 				rect = Rect(self.pos, self.size)
-				pygame.draw.rect(surface, self.highlight_color, rect, 5)
+				pygame.draw.rect(surface, self.highlight_color, rect, self.line_width)
 
 	def update(self, row: int, col: int, delta: float = 0.01, end_movement = True) -> None:
 		offset_x, offset_y = self.offset
-		new_pos = col * JEWEL_SIZE + offset_x, row * JEWEL_SIZE + offset_y
+		new_pos = col * self.jewel_size + offset_x, row * self.jewel_size + offset_y
 		
 		self.row = row
 		self.col = col

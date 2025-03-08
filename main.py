@@ -12,6 +12,44 @@ from entities import Entity, Board, Score, MoveCounter
 from events import GameEventListener
 from event_handlers import event_handlers
 
+class Sizes:
+    def __init__(self, window_w: int, window_h: int , jewel_size: int | float):
+        self.__window_w = window_w
+        self.__window_h = window_h
+        self.__jewel_size = jewel_size
+
+    def get_window_size(self) -> tuple[int, int]:
+        return self.__window_w, self.__window_h
+
+    def get_jewel_size(self) -> int:
+        return int(self.__jewel_size)
+
+def calculate_sizes(cols: int, rows: int, margin_w: int, margin_h: int) -> Sizes:
+    current_display_info = pygame.display.Info()
+    current_w, current_h = current_display_info.current_w, current_display_info.current_h
+    top_margin = 200
+    bottom_margin = 20
+
+    jewel_size = Display.JEWEL_SIZE
+    height = current_h - margin_h
+    
+    board_h = rows * jewel_size
+    max_board_h = height - (top_margin + bottom_margin)
+    if board_h > max_board_h:
+        ratio = max_board_h / board_h
+        new_jewel_size = jewel_size * ratio
+        if new_jewel_size < jewel_size:
+            jewel_size = new_jewel_size
+
+    width = int(cols * jewel_size + 2 * margin_w)
+    if width > current_w:
+        ratio = current_w / width
+        width = current_w
+        jewel_size *= ratio
+
+
+    return Sizes(width, height, jewel_size)
+
 def handle_engine_events(board: Board):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -34,30 +72,27 @@ def handle_game_events(move_counter: MoveCounter, score: Score, board: Board):
         event_handlers[event.name](event, move_counter, board, score)
 
 def draw(surface: Surface, entities: list[Entity]):
-    screen.fill(background_color)
+    screen.fill(Colors.BACKGROUND_COLOR)
 
     for entity in entities:
         entity.draw(surface)
 
 if __name__ == "__main__":
-    current_display_info = pygame.display.Info()
+    margin_w, margin_h = 50, 100
+    board_cols, board_rows = 20, 20
 
-    # print(current_display)
+    sizes = calculate_sizes(board_cols, board_rows, margin_w, margin_h)
+    width, height = sizes.get_window_size()
+    jewel_size = sizes.get_jewel_size()
 
-    background_color = Colors.BACKGROUND_COLOR
-    horizontal_margin = 50
-    vertical_margin = 100
-    board_cols, board_rows = 12, 10
-    width = board_cols * Display.JEWEL_SIZE + 2 * horizontal_margin
+    print(f"window_size: {width, height}, jewel_size: {jewel_size}")
 
     move_counter = MoveCounter((int(width/2), 20), (30, 30))
-    score = Score((horizontal_margin, 60), (board_cols * Display.JEWEL_SIZE, 120))
-    board = Board((horizontal_margin, 200), board_cols, board_rows)
+    score = Score((margin_w, 60), (board_cols * jewel_size, 120))
+    board = Board((margin_w, 200), board_cols, board_rows, jewel_size)
     moved = False
-    height = board_rows * Display.JEWEL_SIZE + move_counter.size[1] + score.size[1] + vertical_margin
 
-    size = width, min(current_display_info.current_h, Display.MAX_WINDOW_HEIGHT) - vertical_margin
-    screen = pygame.display.set_mode(size)
+    screen = pygame.display.set_mode(sizes.get_window_size())
 
     while True:
         if board.finished:

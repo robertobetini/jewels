@@ -41,7 +41,7 @@ class Colors:
 
 class Display:
 	MAX_WINDOW_HEIGHT = 1080
-	JEWEL_SIZE = 60
+	JEWEL_SIZE = 100
 
 class Text:
 	MOVE_COUNTER_TEXT_SIZE = 32
@@ -51,3 +51,10 @@ class Game:
 	BASE_JEWEL_SCORE = 10
 	STARTING_MOVES = 30
 	JEWEL_TYPES = [0, 1, 2 , 3, 4, 5, 6]
+	PROGRESS_MAP = {
+		1: 100,
+		2: 160,
+		3: 250,
+		4: 390,
+		5: 540
+	}

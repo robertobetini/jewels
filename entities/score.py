@@ -6,14 +6,6 @@ from pygame import Rect, Surface
 from constants import Game, Image, Colors, Text
 from entities.entity import Entity
 
-PROGRESS_MAP = {
-	1: 100,
-	2: 160,
-	3: 250,
-	4: 390,
-	5: 540
-}
-
 class Progress:
 	def __init__(self):
 		self.current = 0.
@@ -29,7 +21,7 @@ class Progress:
 		self.level += 1
 		remaining = self.current - self.max
 		self.current = 0
-		self.max = PROGRESS_MAP[self.level]
+		self.max = Game.PROGRESS_MAP[self.level]
 
 		if remaining > 0:
 			self.add(remaining)

@@ -1,13 +1,13 @@
-from time import sleep
 import pygame
 
+from time import sleep
 from random import randint
 from threading import Thread
 from pygame import Surface
 
 from entities.entity import Entity
 from entities.jewel import Jewel, JEWEL_CRUSHED, JEWEL_IDLE, JEWEL_MOVING
-from constants import Game, Display, Sound, Colors
+from constants import Display, Game, Sound, Colors
 
 from events import GameEvent, GameEventEmitter, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT
 
@@ -24,13 +24,14 @@ def clear_selected(func):
 	return wrapper
 
 class Board(Entity):
-	def __init__(self, pos: tuple[int, int], width: int, height: int):
-		self.cell_size = Display.JEWEL_SIZE
+	def __init__(self, pos: tuple[int, int], width: int, height: int, cell_size: int):
+		self.cell_size = cell_size
 		size = self.cell_size * width, self.cell_size * height
 		super().__init__(pos, size, Colors.BORDER_COLOR)
 		
 		self.width = width
 		self.height = height
+		self.line_width = round(5 * self.cell_size / Display.JEWEL_SIZE)
 		self.selected : list[Jewel] = []
 		self.finished = False
 		self.__initialize_jewels()
@@ -57,7 +58,7 @@ class Board(Entity):
 			for col in range(self.width):
 				type_index = randint(0, len(Game.JEWEL_TYPES) - 1)
 				jewel_type = Game.JEWEL_TYPES[type_index]
-				jewel = Jewel(0, col, self.pos, jewel_type)
+				jewel = Jewel(0, col, self.cell_size, self.pos, jewel_type)
 
 				Thread(target=jewel.update, args=[row, col, 0.015]).start()
 
@@ -128,7 +129,7 @@ class Board(Entity):
 
 				type_index = randint(0, len(Game.JEWEL_TYPES) - 1)
 				jewel_type = Game.JEWEL_TYPES[type_index]
-				jewel = Jewel(0, col, self.pos, jewel_type)
+				jewel = Jewel(0, col, self.cell_size, self.pos, jewel_type)
 
 				Thread(target=jewel.update, args=[row, col, 0.015]).start()
 
@@ -225,16 +226,15 @@ class Board(Entity):
 
 		x, y = self.pos
 
-		line_width = 5
 		for row in range(len(self.jewels) + 1):
 			start = x, row * self.cell_size + y
 			end =  self.width * self.cell_size + x, row * self.cell_size + y
-			pygame.draw.line(surface, self.color, start, end, line_width)
+			pygame.draw.line(surface, self.color, start, end, self.line_width)
 
 		for col in range(len(self.jewels[0]) + 1):
 			start = col * self.cell_size + x, y
 			end = col * self.cell_size + x, self.height * self.cell_size + y
-			pygame.draw.line(surface, self.color, start, end, line_width)
+			pygame.draw.line(surface, self.color, start, end, self.line_width)
 
 		for row in self.jewels:
 			for jewel in row:
