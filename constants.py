@@ -24,6 +24,7 @@ class Image:
 	]
 
 class Colors:
+	BACKGROUND_COLOR = 120, 130, 115
 	JEWEL_COLORS = [
 		(236, 40,  19 ),
 		(43,  237, 135),
@@ -39,6 +40,7 @@ class Colors:
 	BORDER_COLOR = 110, 118, 113
 
 class Display:
+	MAX_WINDOW_HEIGHT = 1080
 	JEWEL_SIZE = 60
 
 class Text:

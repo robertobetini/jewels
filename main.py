@@ -7,7 +7,7 @@ pygame.font.init()
 from threading import Thread
 from pygame import Surface
 
-from constants import Display
+from constants import Display, Colors
 from entities import Entity, Board, Score, MoveCounter
 from events import GameEventListener
 from event_handlers import event_handlers
@@ -40,9 +40,13 @@ def draw(surface: Surface, entities: list[Entity]):
         entity.draw(surface)
 
 if __name__ == "__main__":
-    background_color = 120, 130, 115
+    current_display_info = pygame.display.Info()
+
+    # print(current_display)
+
+    background_color = Colors.BACKGROUND_COLOR
     horizontal_margin = 50
-    vertical_margin = 80
+    vertical_margin = 100
     board_cols, board_rows = 12, 10
     width = board_cols * Display.JEWEL_SIZE + 2 * horizontal_margin
 
@@ -52,7 +56,7 @@ if __name__ == "__main__":
     moved = False
     height = board_rows * Display.JEWEL_SIZE + move_counter.size[1] + score.size[1] + vertical_margin
 
-    size = width, height
+    size = width, min(current_display_info.current_h, Display.MAX_WINDOW_HEIGHT) - vertical_margin
     screen = pygame.display.set_mode(size)
 
     while True:
