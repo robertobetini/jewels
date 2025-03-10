@@ -1,26 +1,32 @@
 import os, pygame
 
 class Sound:
-	CLICK_SOUND = pygame.mixer.Sound(os.path.join("assets", "click.mp3"))
+	CLICK_SOUNDS = [
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_1.wav")),
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_2.wav")),
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_3.wav")),
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_4.wav")),
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_5.wav"))
+	]
 
 class Image:
 	JEWEL_IMAGES = [
-		pygame.image.load(os.path.join("assets", "gems_6_0.png")),
-		pygame.image.load(os.path.join("assets", "gems_1_1.png")),
-		pygame.image.load(os.path.join("assets", "gems_0_2.png")),
-		pygame.image.load(os.path.join("assets", "gems_4_3.png")),
-		pygame.image.load(os.path.join("assets", "gems_2_4.png")),
-		pygame.image.load(os.path.join("assets", "gems_5_5.png")),
-		pygame.image.load(os.path.join("assets", "gems_3_6.png"))
+		pygame.image.load(os.path.join("assets", "img", "gems_6_0.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_1_1.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_0_2.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_4_3.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_2_4.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_5_5.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_3_6.png"))
 	]
 	JEWEL_ICONS = [
-		pygame.image.load(os.path.join("assets", "gems_6_0.png")),
-		pygame.image.load(os.path.join("assets", "gems_1_1.png")),
-		pygame.image.load(os.path.join("assets", "gems_0_2.png")),
-		pygame.image.load(os.path.join("assets", "gems_4_3.png")),
-		pygame.image.load(os.path.join("assets", "gems_2_4.png")),
-		pygame.image.load(os.path.join("assets", "gems_5_5.png")),
-		pygame.image.load(os.path.join("assets", "gems_3_6.png"))
+		pygame.image.load(os.path.join("assets", "img", "gems_6_0.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_1_1.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_0_2.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_4_3.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_2_4.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_5_5.png")),
+		pygame.image.load(os.path.join("assets", "img", "gems_3_6.png"))
 	]
 
 class Colors:

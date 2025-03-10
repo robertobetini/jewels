@@ -47,7 +47,6 @@ def calculate_sizes(cols: int, rows: int, margin_w: int, margin_h: int) -> Sizes
         width = current_w
         jewel_size *= ratio
 
-
     return Sizes(width, height, jewel_size)
 
 def handle_engine_events(board: Board):
