@@ -2,7 +2,7 @@ from threading import Thread
 
 from constants import Game
 from errors import GameEventHandlingError
-from events import GameEvent, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT, OUT_OF_MOVES_EVENT
+from events import GameEvent, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT, OUT_OF_MOVES_EVENT, JEWEL_SELECTED_EVENT
 from entities import Jewel, Board, Score, MoveCounter
 
 def crush_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
@@ -35,8 +35,12 @@ def move_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board, 
 def out_of_moves_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
 	board.game_over()
 
+def jewel_selected_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
+	pass
+
 event_handlers = {
 	CRUSH_JEWEL_EVENT: crush_jewel_event,
 	MOVE_JEWEL_EVENT: move_jewel_event,
-	OUT_OF_MOVES_EVENT: out_of_moves_event
+	OUT_OF_MOVES_EVENT: out_of_moves_event,
+	JEWEL_SELECTED_EVENT: jewel_selected_event
 }

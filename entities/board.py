@@ -9,7 +9,7 @@ from entities.entity import Entity
 from entities.jewel import Jewel, JEWEL_CRUSHED, JEWEL_IDLE, JEWEL_MOVING
 from constants import Display, Game, Sound, Colors
 
-from events import GameEvent, GameEventEmitter, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT
+from events import GameEvent, GameEventEmitter, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT, JEWEL_SELECTED_EVENT
 
 def lock_board(func):
 	def wrapper(self, *args):
@@ -276,6 +276,8 @@ class Board(Entity):
 
 		self.selected.append(jewel)
 		jewel.highlighted = True
+		event = GameEvent(JEWEL_SELECTED_EVENT)
+		GameEventEmitter.emit(event)
 
 		return jewel
 

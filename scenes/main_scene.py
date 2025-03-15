@@ -1,12 +1,13 @@
 import sys, pygame
 
 from threading import Thread
-from pygame import Surface
 
-from entities.scenes.scene import Scene
+from abstract import Scene
+from scenes import PausedScene
 from entities import MoveCounter, Score, Board
 from events import GameEventListener
 from event_handlers import event_handlers
+from singletons import Global
 
 moved = False
 
@@ -18,15 +19,15 @@ class MainScene(Scene):
 		super().__init__([self.move_counter, self.score, self.board])
 
 	def run(self):
-		self.handle_engine_events()
-		self.handle_game_events()
+		self.__handle_engine_events()
+		self.__handle_game_events()
         
 		self.moved
 		if self.moved:
 			Thread(target=self.board.update).start()
 			self.moved = False
 
-	def handle_engine_events(self):
+	def __handle_engine_events(self):
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				sys.exit()
@@ -36,16 +37,16 @@ class MainScene(Scene):
 			if event.type == pygame.MOUSEBUTTONUP:
 				mouse_pos = pygame.mouse.get_pos()
 				self.board.select(mouse_pos)
+			if event.type == pygame.KEYDOWN:
+				pressed = pygame.key.get_pressed()
+				if pressed[pygame.K_ESCAPE]:
+					Global.current_scene = PausedScene(self, [])
 
 			if self.board.can_try_swap():
 					self.moved = self.board.swap()
 
-	def handle_game_events(self):
+	def __handle_game_events(self):
 		event = GameEventListener.listen()
 		if event:
 			print(f"Handling event {event.name}")
 			event_handlers[event.name](event, self.move_counter, self.board, self.score)
-
-	def draw(self, surface: Surface):
-		for entity in self.entities:
-			entity.draw(surface)

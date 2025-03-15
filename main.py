@@ -6,29 +6,27 @@ pygame.font.init()
 
 from pygame import Surface
 
-from singletons import Global
-from constants import Colors
-from entities.scenes import Scene, MainScene
+from constants import Colors, Game, Display
+from abstract import Scene
+from scenes import MainScene
 from entities import Board, Score, MoveCounter
-from sizes import init_sizes
+from sizes import get_sizes
+from singletons import Global
 
 def draw(surface: Surface, scene: Scene):
     screen.fill(Colors.BACKGROUND_COLOR)
     scene.draw(surface)
 
 if __name__ == "__main__":
-    margin_w, margin_h = 50, 100
-    board_cols, board_rows = 20, 20
-
-    sizes = init_sizes(board_cols, board_rows, margin_w, margin_h)
+    sizes = get_sizes()
     width, height = sizes.get_window_size()
     jewel_size = sizes.get_jewel_size()
 
     print(f"window_size: {width, height}, jewel_size: {jewel_size}")
 
     move_counter = MoveCounter((int(width/2), 20), (30, 30))
-    score = Score((margin_w, 60), (board_cols * jewel_size, 120))
-    board = Board((margin_w, 200), board_cols, board_rows, jewel_size)
+    score = Score((Display.MARGIN_W, 60), (Game.BOARD_COLS * jewel_size, 120))
+    board = Board((Display.MARGIN_W, 200), Game.BOARD_COLS, Game.BOARD_ROWS, jewel_size)
 
     screen = pygame.display.set_mode(sizes.get_window_size())
     Global.current_scene = MainScene((move_counter, score, board))
