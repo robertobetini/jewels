@@ -6,12 +6,11 @@ pygame.font.init()
 
 from pygame import Surface
 
+from singletons import Global
 from constants import Colors
 from entities.scenes import Scene, MainScene
 from entities import Board, Score, MoveCounter
 from sizes import init_sizes
-
-current_scene : Scene | None = None
 
 def draw(surface: Surface, scene: Scene):
     screen.fill(Colors.BACKGROUND_COLOR)
@@ -32,9 +31,9 @@ if __name__ == "__main__":
     board = Board((margin_w, 200), board_cols, board_rows, jewel_size)
 
     screen = pygame.display.set_mode(sizes.get_window_size())
-    current_scene = MainScene((move_counter, score, board))
+    Global.current_scene = MainScene((move_counter, score, board))
 
     while True:
-        current_scene.run()
-        draw(screen, current_scene)
+        Global.current_scene.run()
+        draw(screen, Global.current_scene)
         pygame.display.flip()
