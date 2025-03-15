@@ -9,7 +9,7 @@ def crush_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board,
 	if len(event.args) != 2:
 		raise GameEventHandlingError(event)
 
-	jewels : list[Jewel] = event.args[0]
+	jewels: list[Jewel] = event.args[0]
 	updates_in_a_row: int = event.args[1]
 
 	summary = {}

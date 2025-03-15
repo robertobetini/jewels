@@ -40,7 +40,7 @@ class Board(Entity):
 		self.width = width
 		self.height = height
 		self.line_width = round(5 * self.cell_size / Display.JEWEL_SIZE)
-		self.selected : list[Jewel] = []
+		self.selected: list[Jewel] = []
 		self.finished = False
 		self.locked = False
 		self.__initialize_jewels()
@@ -57,8 +57,8 @@ class Board(Entity):
 		return repr
 
 	def __initialize_jewels(self, breakable_allowed=False) -> None:
-		self.jewels : list[list[Jewel]]= []
-		self.jewels_next : list[list[Jewel]]= []
+		self.jewels: list[list[Jewel]]= []
+		self.jewels_next: list[list[Jewel]]= []
 
 		for row in range(self.height):
 			self.jewels.append([])
@@ -155,11 +155,11 @@ class Board(Entity):
 
 	def __get_breakable_jewels(self, check_next_move=False) -> list[Jewel]:
 		jewels = self.jewels_next if check_next_move else self.jewels
-		breakable : list[Jewel] = []
+		breakable: list[Jewel] = []
 
 		for row in jewels:
 			last_type = None
-			group : list[Jewel] = []
+			group: list[Jewel] = []
 
 			for jewel in row:
 				if jewel.state == JEWEL_CRUSHED:
@@ -178,7 +178,7 @@ class Board(Entity):
 
 		for col in range(len(jewels[0])):
 			last_type = None
-			group : list[Jewel] = []
+			group: list[Jewel] = []
 
 			for row in range(len(jewels)):	
 				jewel = jewels[row][col]
