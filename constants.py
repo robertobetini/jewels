@@ -2,11 +2,11 @@ import os, pygame
 
 class Sound:
 	CLICK_SOUNDS = [
-		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_1.wav")),
-		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_2.wav")),
-		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_3.wav")),
-		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_4.wav")),
-		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_move_5.wav"))
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_break_1.wav")),
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_break_2.wav")),
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_break_3.wav")),
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_break_4.wav")),
+		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_break_5.wav"))
 	]
 
 class Image:
