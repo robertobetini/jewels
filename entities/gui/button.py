@@ -12,7 +12,7 @@ class Button(Entity):
 		self.text = text
 		self.rendered_text = self.font.render(self.text, True, self.color)
 		_, height = self.rendered_text.get_size()
-		self.size = (200, height)
+		self.size = (250, height)
 		self.surface = Surface(self.size)
 		self.surface.set_alpha(220)
 		self.surface.blit(self.rendered_text, (2, 2))

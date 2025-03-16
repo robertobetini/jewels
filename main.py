@@ -9,7 +9,7 @@ from pygame import Surface
 from constants import Colors
 from abstract import Scene
 from sizes import get_sizes
-from scenes import MainScene
+from scenes import TitleScene
 from singletons import Global
 
 def draw(surface: Surface, scene: Scene):
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     sizes = get_sizes()
     screen = pygame.display.set_mode(sizes.get_window_size())
 
-    Global.current_scene = MainScene.new()
+    Global.current_scene = TitleScene()
     while True:
         if Global.current_scene:
             Global.current_scene.run()
