@@ -21,6 +21,18 @@ class PausedScene(Scene):
 		self.font = Font(get_default_font(), Text.GUI_TEXT_SIZE)
 		self.click_action = ""
 
+		width, height = pygame.display.get_surface().get_size()
+		
+		self.background_surface = Surface((width, height))
+		self.background_surface.set_alpha(80)
+		self.background_surface.fill((80, 103, 115))
+
+		self.left_brackground_surface = Surface((400, height))
+		self.left_brackground_surface.set_alpha(200)
+		self.left_brackground_surface.fill((0, 0, 0))
+
+		self.paused_text = self.font.render("PAUSED", True, Colors.GUI_TEXT_COLOR)
+
 		# highlight button if mouse is already overlapping when scene is first disaplayed
 		self.__update_button_highlight()
 
@@ -30,20 +42,9 @@ class PausedScene(Scene):
 	def draw(self, surface: Surface):
 		self.background_scene.draw(surface)
 
-		width, height = pygame.display.get_surface().get_size()
-
-		background = Surface((width, height))
-		background.set_alpha(80)
-		background.fill((80, 103, 115))
-		surface.blit(background, (0, 0))
-
-		left_brackground = Surface((400, height))
-		left_brackground.set_alpha(200)
-		left_brackground.fill((0, 0, 0))
-		surface.blit(left_brackground, (0, 0))
-
-		text = self.font.render("PAUSED", True, Colors.GUI_TEXT_COLOR)
-		surface.blit(text, (100, 100))
+		surface.blit(self.background_surface, (0, 0))
+		surface.blit(self.left_brackground_surface, (0, 0))
+		surface.blit(self.paused_text, (100, 100))
 
 		for entity in self.entities:
 			entity.draw(surface)
