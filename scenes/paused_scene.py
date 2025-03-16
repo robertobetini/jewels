@@ -55,9 +55,11 @@ class PausedScene(Scene):
 		mouse_pos = pygame.mouse.get_pos()
 		for button in self.buttons:
 			if button.is_overlapped(mouse_pos):
-				button.highlighted = True
+				if button.highlighted:
+					break
+				button.highlight()
 			else:
-				button.highlighted = False
+				button.unhighlight()
 
 	def __resume(self):
 		Global.current_scene = self.background_scene
@@ -71,9 +73,8 @@ class PausedScene(Scene):
 		sys.exit()
 
 	def __go_back_to_title(self):
-		game_event = GameEvent(BACK_TO_TITLE_EVENT)
-		GameEventEmitter.emit(game_event)
-		Global.current_scene = self.background_scene
+		from scenes import TitleScene
+		Global.current_scene = TitleScene()
 
 	def __handle_engine_events(self):
 		for event in pygame.event.get():

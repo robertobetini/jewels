@@ -44,15 +44,10 @@ def restart_game_event(event: GameEvent, move_counter: MoveCounter, board: Board
 	from scenes import MainScene
 	Global.current_scene = MainScene.new()
 
-def back_to_title_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
-	from scenes import TitleScene
-	Global.current_scene = TitleScene()
-
 event_handlers = {
 	CRUSH_JEWEL_EVENT: crush_jewel_event,
 	MOVE_JEWEL_EVENT: move_jewel_event,
 	OUT_OF_MOVES_EVENT: out_of_moves_event,
 	JEWEL_SELECTED_EVENT: jewel_selected_event,
-	RESTART_GAME_EVENT: restart_game_event,
-	BACK_TO_TITLE_EVENT: back_to_title_event
+	RESTART_GAME_EVENT: restart_game_event
 }

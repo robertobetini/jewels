@@ -51,9 +51,11 @@ class TitleScene(Scene):
 		mouse_pos = pygame.mouse.get_pos()
 		for button in self.buttons:
 			if button.is_overlapped(mouse_pos):
-				button.highlighted = True
+				if button.highlighted:
+					break
+				button.highlight()
 			else:
-				button.highlighted = False
+				button.unhighlight()
 
 	def __start(self):
 		Global.current_scene = MainScene.new()
