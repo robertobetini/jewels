@@ -14,14 +14,16 @@ class Button(Entity):
 		_, height = self.rendered_text.get_size()
 		self.size = (200, height)
 		self.surface = Surface(self.size)
-		self.surface.set_alpha(230)
+		self.surface.set_alpha(220)
 		self.surface.blit(self.rendered_text, (2, 2))
+		self.highlighted = False
 
 	def draw(self, surface: Surface) -> None:
-		super().draw_brackground(surface, 230, 2, (35, 40, 85))
 		surface.blit(self.surface, self.pos)
+		if self.highlighted:
+			super().draw(surface);
 
-	def is_clicked(self, pos: tuple[int, int] | tuple[float, float]) -> bool:
+	def is_overlapped(self, pos: tuple[int, int] | tuple[float, float]) -> bool:
 		x, y = pos
 		button_x, button_y = self.pos
 		button_w, button_h = self.size

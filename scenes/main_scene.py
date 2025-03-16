@@ -24,7 +24,6 @@ class MainScene(Scene):
 		self.__handle_engine_events()
 		self.__handle_game_events()
         
-		self.moved
 		if self.moved:
 			Thread(target=self.board.update).start()
 			self.moved = False
@@ -42,7 +41,7 @@ class MainScene(Scene):
 			if event.type == pygame.KEYDOWN:
 				pressed = pygame.key.get_pressed()
 				if pressed[pygame.K_ESCAPE]:
-					Global.current_scene = PausedScene(self, [])
+					Global.current_scene = PausedScene(self)
 
 			if self.board.can_try_swap():
 					self.moved = self.board.swap()
