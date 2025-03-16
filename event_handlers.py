@@ -2,8 +2,7 @@ from threading import Thread
 
 from events import *
 
-from constants import Game, Display
-from sizes import get_sizes
+from constants import Game
 from errors import GameEventHandlingError
 from entities import Jewel, Board, Score, MoveCounter
 from singletons import Global

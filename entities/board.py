@@ -5,11 +5,12 @@ from random import randint, choice
 from threading import Thread
 from pygame import Surface
 
+from events import *
+
 from entities.entity import Entity
 from entities.jewel import Jewel, JEWEL_CRUSHED, JEWEL_IDLE, JEWEL_MOVING
 from constants import Display, Game, Sound, Colors
 
-from events import GameEvent, GameEventEmitter, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT, JEWEL_SELECTED_EVENT
 
 def lock_board(func):
 	def wrapper(self, *args):

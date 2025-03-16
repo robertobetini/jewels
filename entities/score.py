@@ -4,7 +4,7 @@ from time import sleep
 from pygame import Rect, Surface
 
 from constants import Game, Image, Colors, Text
-from entities.entity import Entity
+from entities import Entity
 
 class Progress:
 	def __init__(self):

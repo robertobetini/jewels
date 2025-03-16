@@ -3,7 +3,7 @@ import pygame
 from pygame import Surface
 
 from constants import Game, Colors, Text
-from entities.entity import Entity
+from entities import Entity
 from events import GameEvent, GameEventEmitter, OUT_OF_MOVES_EVENT
 
 class MoveCounter(Entity):

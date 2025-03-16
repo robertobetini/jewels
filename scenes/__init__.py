@@ -1,2 +1,2 @@
-from scenes.paused_scene import PausedScene
-from scenes.main_scene import MainScene
+from .paused_scene import PausedScene
+from .main_scene import MainScene

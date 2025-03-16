@@ -3,10 +3,9 @@ import pygame
 from time import sleep
 from random import randint
 from pygame import Rect, Surface
-from pygame.draw import line
 
 from constants import Display, Game, Image, Colors
-from entities.entity import Entity
+from entities import Entity
 from errors import InvalidJewelStateError
 
 JEWEL_SIZE = Display.JEWEL_SIZE
