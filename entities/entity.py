@@ -14,10 +14,10 @@ class Entity:
 		rect = Rect(x, y, width, height)
 		pygame.draw.rect(surface, self.color, rect, width=1)
 
-	def draw_brackground(self, surface, alpha: int = 255, thickness: int = 5):
+	def draw_brackground(self, surface, alpha: int = 255, thickness: int = 5, color: tuple[int, int, int] | None = None):
 		background = Surface(self.size)
 		background.set_alpha(alpha)
-		background.fill((0, 0, 0))
+		background.fill(color if color else (0, 0, 0))
 		surface.blit(background, self.pos)
 
 		background_border = Rect(self.pos, self.size)

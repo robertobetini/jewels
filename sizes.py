@@ -2,6 +2,8 @@ import pygame
 
 from constants import Game, Display
 
+current_display_info = pygame.display.Info()
+
 class Sizes:
     def __init__(self, window_w: int, window_h: int , jewel_size: int | float):
         self.__window_w = window_w
@@ -15,8 +17,8 @@ class Sizes:
         return int(self.__jewel_size)
 
 def get_sizes() -> Sizes:
-    current_display_info = pygame.display.Info()
     current_w, current_h = current_display_info.current_w, current_display_info.current_h
+    
     top_margin = 200
     bottom_margin = 20
 

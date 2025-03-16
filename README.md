@@ -76,8 +76,9 @@ There's also a progress gauge for each jewel type, but it's not fully function r
 - [x] Adjust visual elements size to the window
 - [x] Dynamically Centralize visual elements
 - [ ] Better control of threads spawned by the game
-- [ ] Title screen
-- [ ] Game over screen
+- [ ] Title scene
+- [ ] Game over scene
+- [x] Pause scene
 
 ## Credits
 

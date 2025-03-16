@@ -2,6 +2,8 @@ import sys, pygame
 
 from threading import Thread
 
+from constants import Game, Display
+from sizes import get_sizes
 from abstract import Scene
 from scenes import PausedScene
 from entities import MoveCounter, Score, Board
@@ -50,3 +52,18 @@ class MainScene(Scene):
 		if event:
 			print(f"Handling event {event.name}")
 			event_handlers[event.name](event, self.move_counter, self.board, self.score)
+
+	@staticmethod
+	def new():
+		sizes = get_sizes()
+		width, height = sizes.get_window_size()
+		jewel_size = sizes.get_jewel_size()
+
+		print(f"window_size: {width, height}, jewel_size: {jewel_size}")
+
+		move_counter = MoveCounter((int(width/2), 20), (30, 30))
+		score = Score((Display.MARGIN_W, 60), (Game.BOARD_COLS * jewel_size, 120))
+		board = Board((Display.MARGIN_W, 200), Game.BOARD_COLS, Game.BOARD_ROWS, jewel_size)
+
+		return MainScene((move_counter, score, board))
+		

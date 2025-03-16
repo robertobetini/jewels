@@ -1,9 +1,12 @@
 from threading import Thread
 
-from constants import Game
+from events import *
+
+from constants import Game, Display
+from sizes import get_sizes
 from errors import GameEventHandlingError
-from events import GameEvent, CRUSH_JEWEL_EVENT, MOVE_JEWEL_EVENT, OUT_OF_MOVES_EVENT, JEWEL_SELECTED_EVENT
 from entities import Jewel, Board, Score, MoveCounter
+from singletons import Global
 
 def crush_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
 	if len(event.args) != 2:
@@ -38,9 +41,14 @@ def out_of_moves_event(event: GameEvent, move_counter: MoveCounter, board: Board
 def jewel_selected_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
 	pass
 
+def restart_game_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
+	from scenes import MainScene
+	Global.current_scene = MainScene.new()
+
 event_handlers = {
 	CRUSH_JEWEL_EVENT: crush_jewel_event,
 	MOVE_JEWEL_EVENT: move_jewel_event,
 	OUT_OF_MOVES_EVENT: out_of_moves_event,
-	JEWEL_SELECTED_EVENT: jewel_selected_event
+	JEWEL_SELECTED_EVENT: jewel_selected_event,
+	RESTART_GAME_EVENT: restart_game_event
 }
