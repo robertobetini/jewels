@@ -48,7 +48,7 @@ python main.py
 
 The core mechanic of the game is to match 3 or more subsequent jewels on a row or column. 
 
-> TODO: insert match gifs here
+![](/doc/match.gif)
 
 You can even do a match including jewels on a row AND a column
 
