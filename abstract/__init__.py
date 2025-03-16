@@ -1,1 +1,1 @@
-from abstract.scene import Scene
+from .scene import Scene

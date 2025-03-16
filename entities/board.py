@@ -11,7 +11,6 @@ from entities.entity import Entity
 from entities.jewel import Jewel, JEWEL_CRUSHED, JEWEL_IDLE, JEWEL_MOVING
 from constants import Display, Game, Sound, Colors
 
-
 def lock_board(func):
 	def wrapper(self, *args):
 		self.locked = True
@@ -96,7 +95,7 @@ class Board(Entity):
 
 	def __wait_until_is_idle(self) -> None:
 		def wait():
-			while self.__is_moving(): 
+			while self.__is_moving():
 				sleep(0.01)
 
 		thread = Thread(target=wait)
@@ -314,4 +313,16 @@ class Board(Entity):
 			thread.start()
 
 	def game_over(self):
-		self.finished = True
+		def __game_over(board):
+			from scenes import TitleScene
+			from singletons import Global
+
+			while self.locked:
+				sleep(0.01)
+
+			self.__wait_until_is_idle()
+			self.finished = True
+			sleep(2)
+			Global.current_scene = TitleScene()
+
+		Thread(target=__game_over, args=(self,)).start()

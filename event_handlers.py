@@ -1,4 +1,5 @@
 from threading import Thread
+import threading
 
 from events import *
 
@@ -35,7 +36,9 @@ def move_jewel_event(event: GameEvent, move_counter: MoveCounter, board: Board, 
 	Thread(target=move_counter.decrease, args=[1]).start()
 
 def out_of_moves_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
+	from scenes import TitleScene
 	board.game_over()
+	#Global.current_scene = TitleScene()
 
 def jewel_selected_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
 	pass
