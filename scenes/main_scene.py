@@ -11,13 +11,10 @@ from events import GameEventListener
 from event_handlers import event_handlers
 from singletons import Global
 
-moved = False
-
 class MainScene(Scene):
 	def __init__(self, entities: tuple[MoveCounter, Score, Board]):
 		self.move_counter, self.score, self.board = entities
 		self.moved = False
-
 		super().__init__([self.move_counter, self.score, self.board])
 
 	def run(self):

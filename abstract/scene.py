@@ -8,7 +8,7 @@ class Scene():
 		self.entities = entities
 
 	def run(self) -> None:
-		raise NotImplemented()
+		raise NotImplementedError("Scene should implement run method")
 
 	def draw(self, surface: Surface) -> None:
 		for entity in self.entities:

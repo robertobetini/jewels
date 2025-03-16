@@ -1,65 +1,24 @@
-import sys, pygame
+import pygame
 
 from pygame import Surface
-from pygame.font import Font, get_default_font
+from pygame.event import Event
 
 from events import *
 
-from constants import Text, Colors
-from abstract import Scene
+from constants import Text
+from abstract import Scene, MenuScene
 from entities.gui import Button
 from singletons import Global
 
-class PausedScene(Scene):
+class PausedScene(MenuScene):
 	def __init__(self, background_scene: Scene):
-		self.resume_button = Button((100, 300), "RESUME")
-		self.restart_button = Button((100, 400), "RESTART")
-		self.back_to_title_button = Button((100, 500), "TITLE")
-		self.exit_button = Button((100, 600), "EXIT")
-		self.buttons : list[Button] = [ self.resume_button, self.restart_button, self.back_to_title_button, self.exit_button ]
+		self.resume_button = Button((100, 300), Text.RESUME_BUTTON_TEXT)
+		self.restart_button = Button((100, 400), Text.RESTART_BUTTON_TEXT)
+		self.back_to_title_button = Button((100, 500), Text.BACK_TO_TITLE_BUTTON_TEXT)
+		self.exit_button = Button((100, 600), Text.EXIT_BUTTON_TEXT)
+		super().__init__(Text.PAUSED_MENU_HEADER, [self.resume_button, self.restart_button, self.back_to_title_button, self.exit_button])
 
-		super().__init__([self.resume_button, self.restart_button, self.back_to_title_button, self.exit_button])
 		self.background_scene = background_scene
-		self.font = Font(get_default_font(), Text.GUI_TEXT_SIZE)
-		self.click_action = ""
-
-		width, height = pygame.display.get_surface().get_size()
-
-		self.background_surface = Surface((width, height))
-		self.background_surface.set_alpha(80)
-		self.background_surface.fill((80, 103, 115))
-
-		self.left_brackground_surface = Surface((400, height))
-		self.left_brackground_surface.set_alpha(200)
-		self.left_brackground_surface.fill((0, 0, 0))
-
-		self.paused_text = self.font.render("PAUSED", True, Colors.GUI_TEXT_COLOR)
-
-		# highlight button if mouse is already overlapping when scene is first disaplayed
-		self.__update_button_highlight()
-
-	def run(self):
-		self.__handle_engine_events()
-
-	def draw(self, surface: Surface):
-		self.background_scene.draw(surface)
-
-		surface.blit(self.background_surface, (0, 0))
-		surface.blit(self.left_brackground_surface, (0, 0))
-		surface.blit(self.paused_text, (100, 100))
-
-		for entity in self.entities:
-			entity.draw(surface)
-
-	def __update_button_highlight(self):
-		mouse_pos = pygame.mouse.get_pos()
-		for button in self.buttons:
-			if button.is_overlapped(mouse_pos):
-				if button.highlighted:
-					break
-				button.highlight()
-			else:
-				button.unhighlight()
 
 	def __resume(self):
 		Global.current_scene = self.background_scene
@@ -69,51 +28,32 @@ class PausedScene(Scene):
 		GameEventEmitter.emit(game_event)
 		Global.current_scene = self.background_scene
 
-	def __exit(self):
-		sys.exit()
-
 	def __go_back_to_title(self):
 		from scenes import TitleScene
 		Global.current_scene = TitleScene()
 
-	def __handle_engine_events(self):
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				self.__exit()
+	def _handle_engine_events(self) -> list[Event]:
+		events = super()._handle_engine_events()
 
-			elif event.type == pygame.MOUSEMOTION:
-				self.__update_button_highlight()
-
-			elif event.type == pygame.MOUSEBUTTONDOWN:
-				mouse_pos = pygame.mouse.get_pos()
-				
-				self.click_action = ""
-				for button in self.buttons:
-					if button.is_overlapped(mouse_pos):
-						self.click_action = button.text
-						break
-
-			elif event.type == pygame.MOUSEBUTTONUP:
-				mouse_pos = pygame.mouse.get_pos()
-
-				click_action = ""
-				for button in self.buttons:
-					if button.is_overlapped(mouse_pos):
-						click_action = button.text
-						break
-
-				# if mouse is up on a different button, ignore action
-				if self.click_action == click_action:
-					if self.click_action == "RESUME":
-						self.__resume()
-					elif self.click_action == "RESTART":
-						self.__restart()
-					elif self.click_action == "TITLE":
-						self.__go_back_to_title()
-					elif self.click_action == "EXIT":
-						self.__exit()
-
-			elif event.type == pygame.KEYDOWN:
+		for event in events:
+			if event.type == pygame.KEYDOWN:
 				pressed = pygame.key.get_pressed()
 				if pressed[pygame.K_ESCAPE]:
 					self.__resume()
+
+		return events
+
+	def _handle_click_action(self) -> None:
+		if self.click_action == Text.RESUME_BUTTON_TEXT:
+			self.__resume()
+		elif self.click_action == Text.RESTART_BUTTON_TEXT:
+			self.__restart()
+		elif self.click_action == Text.BACK_TO_TITLE_BUTTON_TEXT:
+			self.__go_back_to_title()
+		elif self.click_action == Text.EXIT_BUTTON_TEXT:
+			self._exit()
+
+	def draw(self, surface: Surface) -> None:
+		self.background_scene.draw(surface)
+		super().draw(surface)
+		

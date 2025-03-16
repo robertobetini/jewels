@@ -41,7 +41,6 @@ class Board(Entity):
 		self.height = height
 		self.line_width = round(5 * self.cell_size / Display.JEWEL_SIZE)
 		self.selected: list[Jewel] = []
-		self.finished = False
 		self.locked = False
 		self.__initialize_jewels()
 
@@ -314,15 +313,19 @@ class Board(Entity):
 
 	def game_over(self):
 		def __game_over(board):
-			from scenes import TitleScene
+			from scenes import GameOverScene
 			from singletons import Global
 
 			while self.locked:
 				sleep(0.01)
 
+			self.locked = True
+
 			self.__wait_until_is_idle()
-			self.finished = True
-			sleep(2)
-			Global.current_scene = TitleScene()
+			sleep(0.3)
+			if Global.current_scene:
+				Global.current_scene = GameOverScene(Global.current_scene)
+
+			self.locked = False
 
 		Thread(target=__game_over, args=(self,)).start()
