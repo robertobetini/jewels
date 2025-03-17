@@ -1,5 +1,7 @@
 import os, pygame
 
+from enum import Enum
+
 class Sound:
 	CLICK_SOUNDS = [
 		pygame.mixer.Sound(os.path.join("assets", "sound", "jewel_break_1.wav")),
@@ -84,3 +86,19 @@ class Game:
 		4: 390,
 		5: 540
 	}
+
+class LogLevel(Enum):
+	ERROR = 0
+	WARN  = 1
+	INFO  = 2
+	DEBUG = 3
+
+	def __gt__(self, other):
+		return self.value > other.value
+
+	def __lt__(self, other):
+		return self.value < other.value
+
+class Log:
+	LOG_LEVEL = LogLevel.DEBUG
+	LOG_FILE_PATH = "./log.txt"

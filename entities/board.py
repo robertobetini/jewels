@@ -114,7 +114,6 @@ class Board(Entity):
 				upper_jewel = self.jewels[row - 1][col]
 
 				if jewel.state == JEWEL_CRUSHED and upper_jewel.state == JEWEL_IDLE:
-					#print(f"swapping: {jewel} and {upper_jewel}")
 					self.free_swap((jewel, upper_jewel), False, delta=0.002)
 					pull_again = True
 
@@ -197,6 +196,8 @@ class Board(Entity):
 
 	@lock_board
 	def update(self, updates_in_a_row: int = 1):
+		from singletons import Global
+		
 		while True:
 			all_jewels_are_idle = True
 			for row in self.jewels:
@@ -210,7 +211,7 @@ class Board(Entity):
 			sleep(0.01)
 
 		breakable = self.__get_breakable_jewels()
-		#print(breakable)
+		Global.logger.debug(f"Breakable: {breakable}")
 		if len(breakable) < 1:
 			return
 

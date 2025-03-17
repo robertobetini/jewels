@@ -1,4 +1,4 @@
-import pygame
+import pygame, traceback
 
 pygame.init()
 pygame.mixer.init()
@@ -23,6 +23,9 @@ if __name__ == "__main__":
     Global.current_scene = TitleScene()
     while True:
         if Global.current_scene:
-            Global.current_scene.run()
-            draw(screen, Global.current_scene)
-            pygame.display.flip()
+            try:
+                Global.current_scene.run()
+                draw(screen, Global.current_scene)
+                pygame.display.flip()
+            except Exception:
+                Global.logger.error(traceback.format_exc())

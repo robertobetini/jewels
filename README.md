@@ -72,7 +72,7 @@ There's also a progress gauge for each jewel type, but it's not fully function r
 - [x] Add limited movements
 - [ ] Create game config file
 - [x] Create a simple game event engine
-- [ ] Create a log system to catch erros and unexpected behaviour
+- [x] Create a log system to catch erros and unexpected behaviour
 - [x] Adjust visual elements size to the window
 - [x] Dynamically Centralize visual elements
 - [ ] Better control of threads spawned by the game
