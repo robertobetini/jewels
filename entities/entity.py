@@ -22,3 +22,4 @@ class Entity:
 
 		background_border = Rect(self.pos, self.size)
 		pygame.draw.rect(surface, self.color, background_border, thickness)
+		
