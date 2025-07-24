@@ -44,6 +44,9 @@ def jewel_selected_event(event: GameEvent, move_counter: MoveCounter, board: Boa
 def jewel_deselected_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
 	pass
 
+def jewel_level_up_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
+	pass
+
 def restart_game_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
 	from scenes import MainScene
 	Global.current_scene = MainScene.new()
@@ -54,5 +57,6 @@ event_handlers = {
 	OUT_OF_MOVES_EVENT: out_of_moves_event,
 	JEWEL_SELECTED_EVENT: jewel_selected_event,
 	RESTART_GAME_EVENT: restart_game_event,
-	JEWEL_DESELECTED_EVENT: jewel_deselected_event
+	JEWEL_DESELECTED_EVENT: jewel_deselected_event,
+	JEWEL_LEVEL_UP_EVENT: jewel_level_up_event
 }

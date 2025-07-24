@@ -5,6 +5,7 @@ from pygame import Rect, Surface
 
 from constants import Game, Image, Colors, Text
 from entities import Entity
+from events import GameEvent, GameEventEmitter, JEWEL_LEVEL_UP_EVENT
 
 class Progress:
 	def __init__(self):
@@ -22,6 +23,9 @@ class Progress:
 		remaining = self.current - self.max
 		self.current = 0
 		self.max = Game.PROGRESS_MAP[self.level]
+
+		event = GameEvent(JEWEL_LEVEL_UP_EVENT)
+		GameEventEmitter.emit(event)
 
 		if remaining > 0:
 			self.add(remaining)
@@ -42,7 +46,6 @@ class Progress:
 
 	def get_percentage(self) -> float:
 		return min(self.current / self.max, 1)
-	
 
 class Score(Entity):
 	def __init__(self, pos: tuple[int, int], size = (20, 20)):

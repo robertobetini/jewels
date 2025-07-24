@@ -195,7 +195,7 @@ class Board(Entity):
 		return breakable
 
 	@lock_board
-	def update(self, updates_in_a_row: int = 1):
+	def update(self, updates_in_a_row: int = 1) -> None:
 		from singletons import Global
 		
 		while True:
@@ -204,6 +204,10 @@ class Board(Entity):
 				for jewel in row:
 					if jewel.state == JEWEL_MOVING:
 						all_jewels_are_idle = False
+						break
+				
+				if not all_jewels_are_idle:
+					break
 
 			if all_jewels_are_idle:
 				break
