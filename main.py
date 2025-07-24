@@ -5,6 +5,8 @@ pygame.mixer.init()
 pygame.font.init()
 
 from pygame import Surface
+from time import sleep
+from threading import Thread
 
 from constants import Colors
 from abstract import Scene
@@ -25,7 +27,12 @@ if __name__ == "__main__":
         if Global.current_scene:
             try:
                 Global.current_scene.run()
-                draw(screen, Global.current_scene)
+                t = Thread(target=draw, args=(screen, Global.current_scene))
+                t.start()
+                t.join()
+                # draw(screen, Global.current_scene)
                 pygame.display.flip()
             except Exception:
                 Global.logger.error(traceback.format_exc())
+
+        sleep(0.005)
