@@ -56,7 +56,7 @@ You can even do a match including jewels on a row AND a column
 
 You can free swap any jewel with any of its neighors, which means that you can swap even if that move doesn't makes a match, but you also have limited movements, so think carefully.
 
-There's also a progress gauge for each jewel type, but it's not fully function right now
+There's also a progress gauge for each jewel type, but it's not fully functional right now
 
 ## TODO
 
