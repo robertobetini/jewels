@@ -1,5 +1,4 @@
 from threading import Thread
-import threading
 
 from events import *
 
@@ -42,6 +41,9 @@ def out_of_moves_event(event: GameEvent, move_counter: MoveCounter, board: Board
 def jewel_selected_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
 	pass
 
+def jewel_deselected_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
+	pass
+
 def restart_game_event(event: GameEvent, move_counter: MoveCounter, board: Board, score: Score) -> None:
 	from scenes import MainScene
 	Global.current_scene = MainScene.new()
@@ -51,5 +53,6 @@ event_handlers = {
 	MOVE_JEWEL_EVENT: move_jewel_event,
 	OUT_OF_MOVES_EVENT: out_of_moves_event,
 	JEWEL_SELECTED_EVENT: jewel_selected_event,
-	RESTART_GAME_EVENT: restart_game_event
+	RESTART_GAME_EVENT: restart_game_event,
+	JEWEL_DESELECTED_EVENT: jewel_deselected_event
 }

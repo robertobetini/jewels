@@ -250,6 +250,15 @@ class Board(Entity):
 			for jewel in row:
 				jewel.draw(surface)
 
+	def get_indexes(self, pos: tuple[float, float]) -> tuple[int, int]:
+		board_x, board_y = self.pos
+		x, y = pos
+
+		selection_row = int((y - board_y) / self.cell_size)
+		selection_col = int((x - board_x) / self.cell_size)
+
+		return selection_row, selection_col
+
 	def select(self, pos: tuple[int, int]) -> Jewel | None:
 		if self.locked:
 			return
@@ -263,8 +272,9 @@ class Board(Entity):
 		if selection_x > self.width * self.cell_size + x or selection_y > self.height * self.cell_size + y:
 			return None
 
-		selection_row = int((selection_y - y) / self.cell_size)
-		selection_col = int((selection_x - x) / self.cell_size)
+		selection_row, selection_col = self.get_indexes(pos)
+		# selection_row = int((selection_y - y) / self.cell_size)
+		# selection_col = int((selection_x - x) / self.cell_size)
 
 		jewel = self.jewels[selection_row][selection_col]
 		if jewel.state != JEWEL_IDLE:
@@ -272,6 +282,10 @@ class Board(Entity):
 
 		for selected in self.selected:
 			if selected == jewel:
+				jewel.highlighted = False
+				self.selected.clear()
+				event = GameEvent(JEWEL_DESELECTED_EVENT)
+				GameEventEmitter.emit(event)
 				return None
 
 		self.selected.append(jewel)

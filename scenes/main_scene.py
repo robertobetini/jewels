@@ -12,6 +12,8 @@ from event_handlers import event_handlers
 from singletons import Global
 
 class MainScene(Scene):
+	last_mouse_pos = (0, 0)
+
 	def __init__(self, entities: tuple[MoveCounter, Score, Board]):
 		self.move_counter, self.score, self.board = entities
 		self.moved = False
@@ -32,8 +34,16 @@ class MainScene(Scene):
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				mouse_pos = pygame.mouse.get_pos()
 				self.board.select(mouse_pos)
+				self.last_mouse_pos = mouse_pos
 			if event.type == pygame.MOUSEBUTTONUP:
 				mouse_pos = pygame.mouse.get_pos()
+
+				current_row, current_col = self.board.get_indexes(mouse_pos)
+				last_row, last_col = self.board.get_indexes(self.last_mouse_pos)
+
+				if current_row == last_row and current_col == last_col:
+					return
+				
 				self.board.select(mouse_pos)
 			if event.type == pygame.KEYDOWN:
 				pressed = pygame.key.get_pressed()
